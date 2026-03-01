@@ -24,11 +24,10 @@ def tune_ot_parameters():
     for eps, iters in configs:
         resampler = OTResample(epsilon=eps, n_iters=iters)
 
-        # Warmup for graph compilation
         _ = resampler(particles, weights)
 
         start = time.perf_counter()
-        # Using unified __call__ interface
+
         new_parts, _ = resampler(particles, weights)
         elapsed = (time.perf_counter() - start) * 1000
 
@@ -37,7 +36,7 @@ def tune_ot_parameters():
 
         cost = tf.norm(tf.reduce_mean(new_parts, axis=1) - tf.reduce_mean(particles, axis=1))
 
-        # Heuristic: Penalize high cost and explicitly penalize slow execution time
+        # Penalize high cost and explicitly penalize slow execution time
         time_penalty = elapsed * 0.01
         score = ratio - (5.0 * cost) - time_penalty
 

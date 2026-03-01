@@ -1,26 +1,6 @@
 import tensorflow as tf
 
-# def train_model(model, obs_batch, true_states, epochs=50):
-#     if len(model.trainable_variables) == 0: return model
-#
-#     optimizer = tf.optimizers.Adam(learning_rate=0.005)
-#
-#     @tf.function
-#     def train_step(obs, states):
-#         with tf.GradientTape() as tape:
-#             est = model(obs)
-#             loss = tf.reduce_mean(tf.square(est - states))
-#
-#         if not tf.math.is_nan(loss):
-#             grads = tape.gradient(loss, model.trainable_variables)
-#             grads, _ = tf.clip_by_global_norm(grads, 1.0)
-#             optimizer.apply_gradients(zip(grads, model.trainable_variables))
-#         return loss
-#
-#     for _ in range(epochs):
-#         loss = train_step(obs_batch, true_states)
-#
-#     return model
+
 
 
 def train_model(model, obs_batch, true_states, epochs=50):
@@ -32,11 +12,9 @@ def train_model(model, obs_batch, true_states, epochs=50):
     @tf.function
     def train_step(obs, states):
         with tf.GradientTape() as tape:
-            # CRITICAL FIX: Unpack the (est, ess) tuple returned by the model
             est, _ = model(obs)
             loss = tf.reduce_mean(tf.square(est - states))
 
-            # Protect against NaNs during early training phases
         if not tf.math.is_nan(loss):
             grads = tape.gradient(loss, model.trainable_variables)
             grads, _ = tf.clip_by_global_norm(grads, 1.0)

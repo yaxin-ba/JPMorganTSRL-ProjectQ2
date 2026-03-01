@@ -5,5 +5,5 @@ This codebase is about implementation of the examples and comparisons about clas
 differentiable particle filters, neural network-based methods, etc.
 
 ### How to implement the experiments
-**Example: run the benchmarks of differentiable particle filters (DPF)**
-> python main.py --exp full_dpf --n_particles 100 --n_steps 50
+**Example: run the benchmarks of differentiable particle filters (DPF), using 100 particles, 50 steps on each approach.**
+`python main.py --exp full_dpf --n_particles 100 --n_steps 50`

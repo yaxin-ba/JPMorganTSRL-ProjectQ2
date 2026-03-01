@@ -4,7 +4,6 @@ import time
 
 # --- Centralized Imports ---
 from resamplers.dresamplers import OTResample
-# Adjust this import based on exactly where you placed the Li17 class
 from dpf.differentiablePF import *
 from benchmarks import UNGM_SSM
 import visualization as viz
@@ -103,7 +102,6 @@ def run_parameter_inference(n_results=100, n_steps=40):
     print(f"{'ESS (R)':<16} | {hmc_ess_R:<15.2f} | {pmmh_ess_R:<15.2f}")
     print(f"{'RMSE Tracking':<16} | {hmc_rmse:<15.4f} | {pmmh_rmse:<15.4f}")
 
-    # Delegated Visualization (Update your viz function to accept R values too)
     viz.show_mcmc_summary_joint(hmc_Q_vals, pmmh_Q_vals, hmc_R_vals, pmmh_R_vals, val_gt_tensor, hmc_est, pmmh_est,
                                 hmc_rmse, pmmh_rmse)
 

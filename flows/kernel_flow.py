@@ -106,7 +106,7 @@ if __name__ == "__main__":
     y = tf.constant([1.5, -0.5], dtype=tf.float32)
     R_inv = tf.eye(2, dtype=tf.float32)
 
-    # Let's say we observe dimension 0 and dimension 2
+    # Observe dimension 0 and dimension 2
     H_idx = tf.constant([0, 2], dtype=tf.int32)
     B_local = tf.eye(dim, dtype=tf.float32) * 2.0
 

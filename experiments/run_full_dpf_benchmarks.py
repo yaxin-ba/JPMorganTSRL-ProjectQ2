@@ -23,7 +23,6 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
 def run_full_benchmark(n_particles=50, n_steps=50):
-    # Strictly using TensorFlow's native random seed
     tf.random.set_seed(42)
 
     ot_eps, ot_iters = tune_ot_parameters()
@@ -56,7 +55,6 @@ def run_full_benchmark(n_particles=50, n_steps=50):
             'Neural Proposal': NeuralProposal_Filter(ssm, SoftResample(0.5), n_particles=n_particles),
             'Neural-OT': NeuralProposal_Filter(ssm, OTResample(ot_eps, ot_iters), n_particles=n_particles),
             'NF-Flow-OT': NF_DPF_Filter(ssm, SoftResample(0.5), n_particles=n_particles),
-            # NeuralOT_Resampler_Filter completely replaces discrete resampling
             'DeepONet-OT': NeuralOT_Resampler_Filter(ssm, OT_TransportMap(ConvexDeepONet(1, 2)), n_particles=n_particles),
             'GradNet-OT': NeuralOT_Resampler_Filter(ssm, OT_TransportMap(ICNN(1, 2)), n_particles=n_particles)
         }
@@ -86,7 +84,6 @@ def run_full_benchmark(n_particles=50, n_steps=50):
                 est, _ = model(obs_batch)
                 rmse_val = calculate_rmse(est, true_states_batch)
 
-            # Converting TF Tensors to pure Python primitives
             stats[name] = {
                 'rmse': float(rmse_val),
                 'latency': float(measure_latency(model, obs_batch)),
@@ -98,7 +95,6 @@ def run_full_benchmark(n_particles=50, n_steps=50):
             print(
                 f"{name:<16} | {stats[name]['rmse']:<10.4f} | {stats[name]['grad_norm']:<10.4f} | {stats[name]['latency']:<12.2f}")
 
-        # Trigger Dashboard Render
         viz.show_benchmark_summary(prob_name, true_states_batch, results, stats)
 
 
